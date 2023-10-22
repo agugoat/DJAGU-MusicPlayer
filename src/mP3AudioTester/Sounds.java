@@ -6,7 +6,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class SoundP2 {
+public class Sounds {
 	private Clip clip;
 	public String musicPath;
 	private long clipTimePosition;
@@ -14,7 +14,9 @@ public class SoundP2 {
 	public void initializeMusic() {
 		try {
 			File musicFile = new File(musicPath);
+			// Path file to Music
 			if (musicFile.exists()) {
+				// checks if the file exists
 				AudioInputStream input = AudioSystem.getAudioInputStream(musicFile);
 				clip = (AudioSystem.getClip());
 				clip.open(input);
@@ -46,26 +48,22 @@ public class SoundP2 {
 		}
 	}
 
+	// This method Resumes the wav file that is being played
 	public void resumeMusic() {
 		while (clip != null && !clip.isRunning()) {
 			clip.setMicrosecondPosition(clipTimePosition);
+			// plays from the postion that it has been paused from
 			clip.start();
-			// showMessage("Press ya bung to stop playing");
+			// plays the clip
 		}
 	}
 
+	// this method stops the music
 	public void stopMusic() {
 		if (clip != null && clip.isRunning()) {
 			clip.stop();
+			// stops the music without having the pause ref point
 		}
-	}
-
-	public static void main(String[] args) {
-		SoundP2 musicController = new SoundP2();
-
-		musicController.startMusic();
-		musicController.pauseMusic();
-		musicController.resumeMusic();
 	}
 
 	public void setMusicPath(String wavPath) {

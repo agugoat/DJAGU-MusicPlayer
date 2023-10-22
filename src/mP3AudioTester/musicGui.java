@@ -13,12 +13,10 @@ import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class musicGui {
-	SoundP2 musicController = new SoundP2();
+	Sounds musicController = new Sounds();
 	private JProgressBar progressBar;
 	JSlider slider = new JSlider();
 
@@ -37,9 +35,11 @@ public class musicGui {
 		}
 	}
 
+	// intializes the progress bar
 	private void initializeProgressBar() {
 		if (timer != null) {
 			timer.stop();
+			// if a timer is currently running, it should be stopped.
 		}
 		progressBar = new JProgressBar();
 		long songDurationLong = musicController.getTotalDuration();
@@ -49,6 +49,7 @@ public class musicGui {
 
 		int updateInterval = 1000; //
 		timer = new Timer(updateInterval, new ActionListener() {
+			// times to the beginning to the end of the song
 			public void actionPerformed(ActionEvent evt) {
 				long currentPositionLong = musicController.getCurrentPosition();
 				int currentPosition = (int) (currentPositionLong / 1000); // Convert to milliseconds
@@ -56,18 +57,7 @@ public class musicGui {
 														// song
 
 			}
-		});
-	}
 
-	private void changeSlider() {
-
-		slider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent evt) {
-				if (slider.getValueIsAdjusting()) {
-					int newPos = slider.getValue();
-					musicController.getterClip().setMicrosecondPosition(newPos);
-				}
-			}
 		});
 	}
 
@@ -77,7 +67,7 @@ public class musicGui {
 		// Create JFrame instance
 		JFrame frame = new JFrame("DJ AGU Music Player");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(400, 200);
+		frame.setSize(1000, 500);
 
 		// Create buttons and add action listeners
 		JButton playButton = new JButton("Play");
@@ -85,12 +75,14 @@ public class musicGui {
 			musicController.startMusic();
 			timer.start();
 		});
+		// Pause button connects to pauseMusic Method
 		JButton pauseButton = new JButton("Pause");
 		pauseButton.addActionListener(e -> musicController.pauseMusic());
-
+		// Resume button connects to resumeMusic Method
 		JButton resumeButton = new JButton("Resume");
 		resumeButton.addActionListener(e -> musicController.resumeMusic());
-
+		// choose/ upload music button lets you choose the wav file to play
+		// also triggers the progress bar of the current bar
 		JButton chooseButton = new JButton("Upload Music");
 		chooseButton.addActionListener(e -> {
 			String selectedFilePath = uploadFile();
@@ -98,24 +90,18 @@ public class musicGui {
 			musicController.initializeMusic();
 			initializeProgressBar();
 			panel.add(progressBar, BorderLayout.CENTER);
-			changeSlider();
-			frame.getContentPane().add(slider, BorderLayout.AFTER_LINE_ENDS);
 
 		});
-		slider.setMinimum(0);
-		slider.setMaximum(100);
-
-		changeSlider();
-		// Create JPanel to hold buttons
-
+		// setting the layout and buttons
 		panel.setLayout(new FlowLayout());
 		panel.add(playButton);
 		panel.add(pauseButton);
 		panel.add(resumeButton);
 		panel.add(chooseButton);
 		;
-		JFileChooser fileChooser = new JFileChooser(".");
-		fileChooser.setFileFilter(new FileNameExtensionFilter("Wav Files", "wav"));
+
+		// File chooser to set what music you want play
+
 		// Add panel to frame
 		frame.add(panel);
 
@@ -124,8 +110,10 @@ public class musicGui {
 	}
 
 	public static void main(String[] args) {
+
 		SwingUtilities.invokeLater(() -> {
 			new musicGui();
+			// displays the gui
 		});
 	}
 }
