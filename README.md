@@ -7,10 +7,7 @@ Pause and play from a certian point and allows easy wav file upload and play.
 Built so far using Java 
 Libaries include - Java Swing, Java Sound, Junit Testing, Abstract Window Toolkit.
 
-future capabilities- 
-CrossFading 
-DJ decks 
-Playlist and File Management
+
 
 ![DJ aguMusic player V1](https://github.com/agugoat/DJAGU-MusicPlayer/assets/132964291/f260e8ed-1049-4586-828f-d02c2705dace)
 ![DJ aguMusic player V1 2](https://github.com/agugoat/DJAGU-MusicPlayer/assets/132964291/797538f6-b73b-4faf-9a76-4ea3f8c9b928)
